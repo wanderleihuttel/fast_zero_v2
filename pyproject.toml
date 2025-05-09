@@ -1,0 +1,74 @@
+[project]
+name = "fastapi-zero"
+version = "0.1.0"
+description = "FastAPI Project"
+authors = [{ name = "Wanderlei Hüttel", email = "wanderlei.huttel@gmail.com" }]
+requires-python = ">=3.13.3,<4.0"
+dependencies = ["fastapi[standard]>=0.115.12", "uvicorn[standard]>=0.34.2"]
+
+[dependency-groups]
+dev = ["pytest>=8.3.5", "pytest-cov>=6.1.1", "ruff>=0.11.8", "taskipy>=1.14.1"]
+
+
+[tool.pytest.ini_options]
+pythonpath = "."
+addopts = '-p no:warnings'
+
+[tool.ruff]
+line-length = 79
+indent-width = 4
+extend-exclude = ['migrations']
+# Exclude a variety of commonly ignored directories.
+exclude = [
+    '.bzr',
+    '.direnv',
+    '.eggs',
+    '.git',
+    '.git-rewrite',
+    '.hg',
+    '.ipynb_checkpoints',
+    '.mypy_cache',
+    '.nox',
+    '.pants.d',
+    '.pyenv',
+    '.pytest_cache',
+    '.pytype',
+    '.ruff_cache',
+    '.svn',
+    '.tox',
+    '.venv',
+    '.vscode',
+    '__pypackages__',
+    '_build',
+    'buck-out',
+    'build',
+    'dist',
+    'node_modules',
+    'site-packages',
+    'venv',
+]
+
+[tool.ruff.lint]
+preview = true
+select = ['I', 'F', 'E', 'W', 'PL', 'PT']
+ignore = ['E402', 'F811']
+
+[tool.ruff.format]
+preview = true
+quote-style = 'single'
+indent-style = 'space'
+line-ending = 'lf'
+
+[tool.taskipy.tasks]
+lint = 'ruff check . && ruff check . --diff'
+
+pre_format = 'ruff check --fix'
+format = 'ruff check . --fix && ruff format .'
+#run = 'fastapi dev fast_zero/app.py'
+run = 'uvicorn fastapi_zero.app:app --reload --reload-delay 1.00'
+kill = 'taskkill /IM python.exe /F'
+
+pre_test = 'task lint'
+# -x para a execução
+test = 'pytest -s --cov=fastapi_zero -vvv'
+post_test = 'coverage html'
