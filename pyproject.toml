@@ -4,7 +4,11 @@ version = "0.1.0"
 description = "FastAPI Project"
 authors = [{ name = "Wanderlei Hüttel", email = "wanderlei.huttel@gmail.com" }]
 requires-python = ">=3.13.3,<4.0"
-dependencies = ["fastapi[standard]>=0.115.12", "uvicorn[standard]>=0.34.2"]
+dependencies = [
+    "fastapi[standard]>=0.115.12",
+    "pydantic[standard]>=2.11.4",
+    "uvicorn[standard]>=0.34.2",
+]
 
 [dependency-groups]
 dev = ["pytest>=8.3.5", "pytest-cov>=6.1.1", "ruff>=0.11.8", "taskipy>=1.14.1"]
@@ -70,5 +74,5 @@ kill = 'taskkill /IM python.exe /F'
 
 pre_test = 'task lint'
 # -x para a execução
-test = 'pytest -s --cov=fastapi_zero -vvv'
+test = 'pytest -s -x --cov=fastapi_zero -vvv -x'
 post_test = 'coverage html'
