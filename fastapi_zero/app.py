@@ -15,7 +15,6 @@ from fastapi_zero.schemas import (
 )
 
 app = FastAPI()
-database = []
 
 
 @app.get('/', status_code=HTTPStatus.OK, response_model=Message)
@@ -69,16 +68,19 @@ def read_users(
 @app.get(
     '/users/{user_id}', status_code=HTTPStatus.OK, response_model=UserPublic
 )
-def get_single_user(user_id: int):
-    if user_id < 1 or user_id > len(database):
+def get_single_user(user_id: int, session: Session = Depends(get_session)):
+    db_user = session.scalars(select(User).where(User.userid == user_id))
+    if not db_user:
         raise HTTPException(
             status_code=HTTPStatus.NOT_FOUND, detail='User not found!'
         )
+    else:
+        return db_user
 
-    return database[user_id - 1]
 
-
-@app.put('/users/{user_id}', response_model=UserPublic)
+@app.put(
+    '/users/{user_id}', status_code=HTTPStatus.OK, response_model=UserPublic
+)
 def update_user(
     user_id: int, user: UserSchema, session: Session = Depends(get_session)
 ):
@@ -92,6 +94,7 @@ def update_user(
         db_user.username = user.username
         db_user.password = user.password
         db_user.email = user.email
+        session.add(db_user)
         session.commit()
         session.refresh(db_user)
 
