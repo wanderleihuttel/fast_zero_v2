@@ -14,7 +14,7 @@ from fastapi_zero.models import User
 from fastapi_zero.settings import Settings
 
 pwd_context = PasswordHash.recommended()
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl='token')
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl='auth/token')
 settings = Settings()
 
 

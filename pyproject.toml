@@ -60,7 +60,7 @@ exclude = [
 
 [tool.ruff.lint]
 preview = true
-select = ['I', 'F', 'E', 'W', 'PL', 'PT']
+select = ['I', 'F', 'E', 'W', 'PL', 'PT', 'FAST']
 ignore = ['E402', 'F811']
 
 [tool.ruff.format]

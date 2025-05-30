@@ -9,7 +9,7 @@ settings = Settings()
 from fastapi_zero.security import create_access_token
 
 
-def test_jwt():
+def test_jwt(settings):
     data = {'test': 'test'}
     token = create_access_token(data)
 
