@@ -43,3 +43,12 @@ async def login_for_acess_token(session: T_Session, form_data: T_OAuthForm):
     access_token = create_access_token(data={'sub': db_user.email})
 
     return {'access_token': access_token, 'token_type': 'Bearer'}
+
+
+@router.post('/refresh_token', response_model=Token)
+async def refresh_access_token(
+    user: Annotated[User, Depends(get_current_user)],
+):
+    new_access_token = create_access_token(data={'sub': user.email})
+
+    return {'access_token': new_access_token, 'token_type': 'Bearer'}
